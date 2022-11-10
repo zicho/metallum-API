@@ -1,5 +1,4 @@
 <script lang="ts">
-	import * as cheerio from 'cheerio';
 	import type { Band } from '../models/Band';
 	import { onMount } from 'svelte';
 	import DataTable from '../components/DataTable.svelte';
@@ -7,7 +6,7 @@
 	import Textfield from '@smui/textfield';
 	import HelperText from '@smui/textfield/helper-text';
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
-	import Button, { Label } from '@smui/button';
+	import { Label } from '@smui/button';
 
 	/** @type {import('./$types').PageData} */ export let data: { data: Band[] };
 
