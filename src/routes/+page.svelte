@@ -69,11 +69,6 @@
 	}
 </script>
 
-<div>
-	<h1>Metal Archives API by zicho</h1>
-	<p>Enter search parameters below</p>
-</div>
-
 <LayoutGrid>
 	<Cell spanDevices={{ desktop: 3, tablet: 6, phone: 12 }}>
 		<Textfield
@@ -119,24 +114,7 @@
 			{/each}
 		</Select>
 	</Cell>
+	<Cell span={12}>
+		<DataTable items={filteredBands} />
+	</Cell>
 </LayoutGrid>
-
-<span>Showing {filteredBands.length} of {bands.length} bands</span>
-
-<DataTable items={filteredBands} />
-
-<!-- <ul style="list-style: none; padding: 0">
-	{#if bands}
-		{#each filteredBands as band}
-			<li style="margin-top: 20px">
-				<span>Name: <a href="{band.url}">{band.name}</a></span><br />
-				<span>Genre: {band.genre}</span><br />
-				<span>Location: {band.location}</span><br />
-				<span>Status: {band.status}</span><br />
-				<hr style="margin-top: 20px"/>
-			</li>
-		{/each}
-	{:else}
-		Loading...
-	{/if}
-</ul> -->
