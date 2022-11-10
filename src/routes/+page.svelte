@@ -100,9 +100,6 @@
 	{:else}
 		<Cell span={12}>
 			<Label>No data has been loaded</Label>
-			<Button disabled={loading} on:click={() => load()} variant="raised">
-				<Label>{!loading ? 'Load' : 'Working!'}</Label>
-			</Button>
 		</Cell>
 	{/if}
 </LayoutGrid>
