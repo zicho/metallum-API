@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as cheerio from 'cheerio';
-	import { Band } from '../models/Band';
+	import type { Band } from '../models/Band';
 	import { onMount } from 'svelte';
 	import DataTable from '../components/DataTable.svelte';
 	import Select, { Option } from '@smui/select';
