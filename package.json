@@ -16,6 +16,7 @@
 	},
 	"devDependencies": {
 		"@material/typography": "^14.0.0",
+		"@smui/button": "^7.0.0-beta.0",
 		"@smui/data-table": "^7.0.0-beta.0",
 		"@smui/icon-button": "^7.0.0-beta.0",
 		"@smui/layout-grid": "^7.0.0-beta.0",
@@ -32,6 +33,7 @@
 		"prettier-plugin-svelte": "^2.7.0",
 		"require": "^2.4.20",
 		"smui-theme": "^7.0.0-beta.0",
+		"supabase": "^1.11.7",
 		"svelte": "^3.44.0",
 		"svelte-check": "^2.7.1",
 		"svelte-preprocess": "^4.10.6",
@@ -41,7 +43,9 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@supabase/supabase-js": "^2.0.6",
 		"cheerio": "^1.0.0-rc.12",
-		"puppeteer": "^19.2.2"
+		"puppeteer": "^19.2.2",
+		"svelte-material-ui": "^7.0.0-beta.0"
 	}
 }

@@ -7,11 +7,14 @@
 	import Textfield from '@smui/textfield';
 	import HelperText from '@smui/textfield/helper-text';
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
+	import Button, { Label } from '@smui/button';
 
-	/** @type {import('./$types').PageData} */ export let data: { data: string };
+	/** @type {import('./$types').PageData} */ export let data: { data: Band[] };
 
 	var bands: Band[] = [];
 	let filteredBands: Band[] = [];
+
+	let loading: boolean = false;
 
 	// search parameters
 	let bandNameSearchTerm: string = '';
@@ -22,32 +25,8 @@
 	let selectedStatus: string = statuses[0];
 
 	onMount(() => {
-		const $ = cheerio.load(data.data);
-
-		$('tr').each((index, element) => {
-			var name = $(element).find('td').eq(0).text();
-			var url = $(element).find('td > a').eq(0).attr('href');
-			var genre = $(element).find('td').eq(1).text();
-			var location = $(element).find('td').eq(2).text();
-			var status = $(element).find('td').eq(3).text();
-
-			if (!name && !url && !genre && !location && !status) {
-				// if we can find no info, we have probably parsed an invalid line. don't add it.
-				return;
-			}
-
-			if (!name) name = 'Name not found';
-			if (!url) url = '#';
-			if (!genre) genre = 'Genre not found';
-			if (!location) location = 'Location not found';
-			if (!status) status = 'Status not found';
-
-			bands.push(new Band(name, url, genre, location, status));
-		});
-
-		bands = bands.filter((b) => b.location.toLocaleLowerCase());
-		statuses = statuses.concat([...new Set(bands.map((x) => x.status).sort())]);
-	});
+		bands = data.data;
+	})
 
 	$: {
 		filteredBands = bands
@@ -114,7 +93,16 @@
 			{/each}
 		</Select>
 	</Cell>
-	<Cell span={12}>
-		<DataTable items={filteredBands} />
-	</Cell>
+	{#if bands.length != 0}
+		<Cell span={12}>
+			<DataTable items={filteredBands} />
+		</Cell>
+	{:else}
+		<Cell span={12}>
+			<Label>No data has been loaded</Label>
+			<Button disabled={loading} on:click={() => load()} variant="raised">
+				<Label>{!loading ? 'Load' : 'Working!'}</Label>
+			</Button>
+		</Cell>
+	{/if}
 </LayoutGrid>
