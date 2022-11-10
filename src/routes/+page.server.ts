@@ -25,7 +25,7 @@ export async function load() {
 			buttonHitCounter++;
 		}
 
-		if (buttonHitCounter == 1) {
+		if (buttonHitCounter == 2) {
 			lastPageHit = true;
 			process.stdout.write(', last page');
 		} else {

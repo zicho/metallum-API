@@ -3,6 +3,11 @@
 	import { Band } from '../models/Band';
 	import { onMount } from 'svelte';
 	import DataTable from '../components/DataTable.svelte';
+	import Select, { Option } from '@smui/select';
+	import Textfield from '@smui/textfield';
+	import HelperText from '@smui/textfield/helper-text';
+	import LayoutGrid, { Cell } from '@smui/layout-grid';
+
 	/** @type {import('./$types').PageData} */ export let data: { data: string };
 
 	var bands: Band[] = [];
@@ -25,8 +30,8 @@
 			var genre = $(element).find('td').eq(1).text();
 			var location = $(element).find('td').eq(2).text();
 			var status = $(element).find('td').eq(3).text();
-			
-			if(!name && !url && !genre && !location && !status) {
+
+			if (!name && !url && !genre && !location && !status) {
 				// if we can find no info, we have probably parsed an invalid line. don't add it.
 				return;
 			}
@@ -45,13 +50,16 @@
 	});
 
 	$: {
-		filteredBands = bands.filter(
-			(b) => b.name.toLocaleLowerCase().indexOf(bandNameSearchTerm.toLocaleLowerCase()) !== -1
-		).filter(
-			(b) => b.location.toLocaleLowerCase().indexOf(locationSearchTerm.toLocaleLowerCase()) !== -1
-		).filter(
-			(b) => b.genre.toLocaleLowerCase().indexOf(genreSearchTerm.toLocaleLowerCase()) !== -1
-		);
+		filteredBands = bands
+			.filter(
+				(b) => b.name.toLocaleLowerCase().indexOf(bandNameSearchTerm.toLocaleLowerCase()) !== -1
+			)
+			.filter(
+				(b) => b.location.toLocaleLowerCase().indexOf(locationSearchTerm.toLocaleLowerCase()) !== -1
+			)
+			.filter(
+				(b) => b.genre.toLocaleLowerCase().indexOf(genreSearchTerm.toLocaleLowerCase()) !== -1
+			);
 
 		if (selectedStatus != statuses[0]) {
 			filteredBands = filteredBands.filter(
@@ -66,24 +74,56 @@
 	<p>Enter search parameters below</p>
 </div>
 
-<div>
-	<input placeholder="Band name..." bind:value={bandNameSearchTerm} />
-	<input placeholder="Location..." bind:value={locationSearchTerm} />
-	<input placeholder="Genre..." bind:value={genreSearchTerm} />
-	<select bind:value={selectedStatus}>
-		{#each statuses as status}
-			<option value={status}>
-				{status}
-			</option>
-		{/each}
-	</select>
-</div>
+<LayoutGrid>
+	<Cell spanDevices={{ desktop: 3, tablet: 6, phone: 12 }}>
+		<Textfield
+			style="width:100%"
+			variant="outlined"
+			bind:value={bandNameSearchTerm}
+			label="Band name"
+		>
+			<HelperText slot="helper">Filter by band name</HelperText>
+		</Textfield>
+	</Cell>
 
-<div style="margin-top: 20px">
-	<span>Showing {filteredBands.length} of {bands.length} bands</span>
-</div>
+	<Cell spanDevices={{ desktop: 3, tablet: 6, phone: 12 }}>
+		<Textfield style="width:100%" variant="outlined" bind:value={genreSearchTerm} label="Genre">
+			<HelperText slot="helper">Filter by genre</HelperText>
+		</Textfield>
+	</Cell>
 
-<DataTable items={filteredBands}></DataTable>
+	<Cell spanDevices={{ desktop: 3, tablet: 6, phone: 12 }}>
+		<Textfield
+			style="width:100%"
+			variant="outlined"
+			bind:value={locationSearchTerm}
+			label="Location"
+		>
+			<HelperText slot="helper">Filter by location</HelperText>
+		</Textfield>
+	</Cell>
+
+	<Cell
+		spanDevices={{ desktop: 3, tablet: 6, phone: 12 }}
+		class="columns margins"
+		style="justify-content: flex-start;"
+	>
+		<Select
+			style="width:100%"
+			variant="outlined"
+			bind:value={selectedStatus}
+			label="Filter by status"
+		>
+			{#each statuses as status}
+				<Option value={status}>{status}</Option>
+			{/each}
+		</Select>
+	</Cell>
+</LayoutGrid>
+
+<span>Showing {filteredBands.length} of {bands.length} bands</span>
+
+<DataTable items={filteredBands} />
 
 <!-- <ul style="list-style: none; padding: 0">
 	{#if bands}

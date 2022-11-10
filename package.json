@@ -16,7 +16,9 @@
 	"devDependencies": {
 		"@smui/data-table": "^7.0.0-beta.0",
 		"@smui/icon-button": "^7.0.0-beta.0",
+		"@smui/layout-grid": "^7.0.0-beta.0",
 		"@smui/select": "^7.0.0-beta.0",
+		"@smui/textfield": "^7.0.0-beta.0",
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/kit": "next",
 		"@typescript-eslint/eslint-plugin": "^5.27.0",
