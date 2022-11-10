@@ -32,8 +32,6 @@
 	"type": "module",
 	"dependencies": {
 		"cheerio": "^1.0.0-rc.12",
-		"colors": "^1.4.0",
-		"puppeteer": "^19.2.2",
-		"require": "^2.4.20"
+		"puppeteer": "^19.2.2"
 	}
 }
