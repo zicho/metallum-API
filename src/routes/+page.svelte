@@ -2,6 +2,7 @@
 	import * as cheerio from 'cheerio';
 	import { Band } from '../models/Band';
 	import { onMount } from 'svelte';
+	import DataTable from '../components/DataTable.svelte';
 	/** @type {import('./$types').PageData} */ export let data: { data: string };
 
 	var bands: Band[] = [];
@@ -82,7 +83,9 @@
 	<span>Showing {filteredBands.length} of {bands.length} bands</span>
 </div>
 
-<ul style="list-style: none; padding: 0">
+<DataTable items={filteredBands}></DataTable>
+
+<!-- <ul style="list-style: none; padding: 0">
 	{#if bands}
 		{#each filteredBands as band}
 			<li style="margin-top: 20px">
@@ -96,4 +99,4 @@
 	{:else}
 		Loading...
 	{/if}
-</ul>
+</ul> -->

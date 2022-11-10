@@ -11,10 +11,10 @@ export async function load() {
 
 	let lastPageHit: boolean = false;
 	let buttonHitCounter: number = 0;
-    let pageCounter: number = 1;
+	let pageCounter: number = 1;
 
 	while (!lastPageHit) {
-        process.stdout.write("Scraping page " + (pageCounter))
+		process.stdout.write('Scraping page ' + pageCounter);
 		data += (await page.evaluate(() => document.querySelector('*')?.outerHTML)) as string;
 
 		// searching for the "next page disabled class" to know when to stop searching.
@@ -25,16 +25,16 @@ export async function load() {
 			buttonHitCounter++;
 		}
 
-		if (buttonHitCounter == 2) {
+		if (buttonHitCounter == 1) {
 			lastPageHit = true;
-            process.stdout.write(", last page");
+			process.stdout.write(', last page');
 		} else {
 			await page.click('#bandListCountry_next');
 			await page.waitForNetworkIdle();
-            pageCounter++;
+			pageCounter++;
 		}
 
-        process.stdout.write(" ...Done!\n");
+		process.stdout.write(' ...Done!\n');
 	}
 
 	await browser.close();
