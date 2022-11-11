@@ -48,7 +48,10 @@
 	}
 </script>
 
+
 <LayoutGrid>
+	<Cell span={12}><div class="mdc-typography--headline3">Metal Archives API Beta 1</div></Cell>
+	
 	<Cell spanDevices={{ desktop: 3, tablet: 6, phone: 12 }}>
 		<Textfield
 			style="width:100%"
@@ -99,7 +102,7 @@
 		</Cell>
 	{:else}
 		<Cell span={12}>
-			<Label>No data has been loaded</Label>
+			<Label><div class="mdc-typography--subtitle2">No data has been loaded!</div></Label>
 		</Cell>
 	{/if}
 </LayoutGrid>
