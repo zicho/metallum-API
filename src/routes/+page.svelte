@@ -25,6 +25,7 @@
 
 	onMount(() => {
 		bands = data.data;
+		statuses = statuses.concat([...new Set(bands.map((x) => x.status).sort())]);
 	})
 
 	$: {
