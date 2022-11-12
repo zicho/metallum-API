@@ -48,12 +48,16 @@
 				<Label>Name</Label>
 				<IconButton class="material-icons">arrow_upward</IconButton>
 			</Cell>
-			<Cell columnId="genre" style="width: 50%;">
+			<Cell columnId="genre" style="width: 40%;">
 				<Label>Genre</Label>
 				<IconButton class="material-icons">arrow_upward</IconButton>
 			</Cell>
 			<Cell columnId="location" style="width: 20%;">
 				<Label>Location</Label>
+				<IconButton class="material-icons">arrow_upward</IconButton>
+			</Cell>
+			<Cell columnId="country" style="width: 10%;">
+				<Label>Country</Label>
 				<IconButton class="material-icons">arrow_upward</IconButton>
 			</Cell>
 			<Cell columnId="status" style="width: 10%;">
@@ -66,8 +70,9 @@
 		{#each slice as item}
 			<Row>
 				<Cell style="width: 20%;"><a href={item.url}>{item.name}</a></Cell>
-				<Cell style="width: 2%0;">{item.genre}</Cell>
+				<Cell style="width: 40%;">{item.genre}</Cell>
 				<Cell style="width: 20%;">{item.location}</Cell>
+				<Cell style="width: 10%;">{item.country}</Cell>
 				<Cell style="width: 10%;">{item.status}</Cell>
 			</Row>
 		{/each}

@@ -6,7 +6,7 @@
 	import Textfield from '@smui/textfield';
 	import HelperText from '@smui/textfield/helper-text';
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
-	import { Label } from '@smui/button';
+	import Button, { Label } from '@smui/button';
 
 	/** @type {import('./$types').PageData} */ export let data: { data: Band[] };
 
@@ -17,8 +17,9 @@
 
 	// search parameters
 	let bandNameSearchTerm: string = '';
-	let locationSearchTerm: string = '';
 	let genreSearchTerm: string = '';
+	let locationSearchTerm: string = '';
+	let countrySearchTerm: string = '';
 
 	let statuses: string[] = ['Any'];
 	let selectedStatus: string = statuses[0];
@@ -26,7 +27,7 @@
 	onMount(() => {
 		bands = data.data;
 		statuses = statuses.concat([...new Set(bands.map((x) => x.status).sort())]);
-	})
+	});
 
 	$: {
 		filteredBands = bands
@@ -34,10 +35,13 @@
 				(b) => b.name.toLocaleLowerCase().indexOf(bandNameSearchTerm.toLocaleLowerCase()) !== -1
 			)
 			.filter(
+				(b) => b.genre.toLocaleLowerCase().indexOf(genreSearchTerm.toLocaleLowerCase()) !== -1
+			)
+			.filter(
 				(b) => b.location.toLocaleLowerCase().indexOf(locationSearchTerm.toLocaleLowerCase()) !== -1
 			)
 			.filter(
-				(b) => b.genre.toLocaleLowerCase().indexOf(genreSearchTerm.toLocaleLowerCase()) !== -1
+				(b) => b.country.toLocaleLowerCase().indexOf(countrySearchTerm.toLocaleLowerCase()) !== -1
 			);
 
 		if (selectedStatus != statuses[0]) {
@@ -46,12 +50,21 @@
 			);
 		}
 	}
+
+	const load = async () => {
+		
+		await fetch("api/load_all_bands");
+	};
 </script>
 
-
 <LayoutGrid>
-	<Cell span={12}><div class="mdc-typography--headline3">Metal Archives API Beta 1</div></Cell>
-	
+	<Cell span={6}><div class="mdc-typography--headline3">Metal Archives API Beta 1</div></Cell>
+	<!-- <Cell span={6}>
+		<Button on:click={() => load()} variant="raised">
+			<Label>Load new data</Label>
+		</Button>
+	</Cell> -->
+
 	<Cell spanDevices={{ desktop: 3, tablet: 6, phone: 12 }}>
 		<Textfield
 			style="width:100%"
@@ -69,7 +82,7 @@
 		</Textfield>
 	</Cell>
 
-	<Cell spanDevices={{ desktop: 3, tablet: 6, phone: 12 }}>
+	<Cell spanDevices={{ desktop: 2, tablet: 6, phone: 12 }}>
 		<Textfield
 			style="width:100%"
 			variant="outlined"
@@ -80,8 +93,19 @@
 		</Textfield>
 	</Cell>
 
+		<Cell spanDevices={{ desktop: 2, tablet: 6, phone: 12 }}>
+		<Textfield
+			style="width:100%"
+			variant="outlined"
+			bind:value={countrySearchTerm}
+			label="Country"
+		>
+			<HelperText slot="helper">Filter by Country</HelperText>
+		</Textfield>
+	</Cell>
+
 	<Cell
-		spanDevices={{ desktop: 3, tablet: 6, phone: 12 }}
+		spanDevices={{ desktop: 2, tablet: 6, phone: 12 }}
 		class="columns margins"
 		style="justify-content: flex-start;"
 	>

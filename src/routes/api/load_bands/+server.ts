@@ -71,7 +71,7 @@ export async function GET() {
 		bands.push(new Band(name, url, genre, location, status));
 	});
 
-  await supabase.from('bands').insert(bands)
+	await supabase.from('bands').insert(bands);
 
 	return json(data);
 }
