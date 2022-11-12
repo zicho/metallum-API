@@ -5,6 +5,9 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load() {
+	// initial load
 	let response = await supabase.from('bands').select();
 	return { data: response.data };
 }
+
+

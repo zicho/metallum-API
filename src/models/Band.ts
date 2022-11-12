@@ -1,4 +1,5 @@
 export class Band {
+	public id?: number
 	public name: string;
 	public url: string;
 	public genre: string;
