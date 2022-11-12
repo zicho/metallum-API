@@ -5,6 +5,7 @@
 	import type { Band } from 'src/models/Band';
 
 	export let items: Band[] = [];
+
 	let sort: keyof Band = 'name';
 	let sortDirection: Lowercase<keyof typeof SortValue> = 'ascending';
 
@@ -66,6 +67,7 @@
 			</Cell>
 		</Row>
 	</Head>
+
 	<Body>
 		{#each slice as item}
 			<Row>
@@ -77,6 +79,7 @@
 			</Row>
 		{/each}
 	</Body>
+
 	<Pagination slot="paginate">
 		<svelte:fragment slot="rowsPerPage">
 			<Label>Rows Per Page</Label>

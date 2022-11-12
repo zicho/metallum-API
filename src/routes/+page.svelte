@@ -7,13 +7,14 @@
 	import HelperText from '@smui/textfield/helper-text';
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
 	import Button, { Label } from '@smui/button';
+	import CircularProgress from '@smui/circular-progress';
 
 	/** @type {import('./$types').PageData} */ export let data: { data: Band[] };
 
 	var bands: Band[] = [];
 	let filteredBands: Band[] = [];
 
-	let loading: boolean = false;
+	let loading: boolean = true;
 
 	// search parameters
 	let bandNameSearchTerm: string = '';
@@ -30,7 +31,9 @@
 		statuses = statuses.concat([...new Set(bands.map((x) => x.status).sort())]);
 	});
 
-	$: selectedStatus, startSearch(); // in place of on:change for Select which does not seem to work :/
+	$: {
+		if (selectedStatus != statuses[0]) startSearch(); // in place of on:change for Select which does not seem to work
+	}
 
 	$: {
 		filteredBands = bands
@@ -64,8 +67,7 @@
 				?name=${bandNameSearchTerm}
 				&genre=${genreSearchTerm}
 				&location=${locationSearchTerm}
-				&country=${countrySearchTerm}
-				`;
+				&country=${countrySearchTerm}`;
 
 		if (selectedStatus != statuses[0]) {
 			queryString = queryString += `&status=${selectedStatus}`;
@@ -79,7 +81,7 @@
 	var delayTimer: any;
 
 	function startSearch(): void {
-		console.log('starting search!');
+		loading = true;
 		clearTimeout(delayTimer);
 		delayTimer = setTimeout(function () {
 			loadNewData();
@@ -88,10 +90,7 @@
 
 	function handleResponse(data: Band[]) {
 		bands = data;
-	}
-
-	function testytest(arg0: string):  void {
-		alert(arg0)
+		loading = false;
 	}
 </script>
 
@@ -168,13 +167,22 @@
 			{/each}
 		</Select>
 	</Cell>
-	{#if bands.length != 0}
-		<Cell span={12}>
-			<DataTable items={filteredBands} />
-		</Cell>
-	{:else}
-		<Cell span={12}>
-			<Label><div class="mdc-typography--subtitle2">No data has been loaded!</div></Label>
-		</Cell>
-	{/if}
+	<!-- {#if bands.length != 0} -->
+	<Cell span={12}>
+		{#if !loading}
+			{#if bands.length != 0}
+				<DataTable items={filteredBands} />
+			{:else}
+				<Label
+					class="mdc-typography--headline5"
+					style="display: flex; justify-content: center;margin-top: 120px">
+					Search returned no results :(
+				</Label>
+			{/if}
+		{:else}
+			<div style="width:100%; display: flex; justify-content: center; margin-top: 120px">
+				<CircularProgress style="height: 120px; width: 120px;" indeterminate />
+			</div>
+		{/if}
+	</Cell>
 </LayoutGrid>

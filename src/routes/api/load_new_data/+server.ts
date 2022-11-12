@@ -13,12 +13,6 @@ export async function GET({ url } : RequestEvent ) {
 	const country = url.searchParams.get('country') ?? '';
 	const status = url.searchParams.get('status') ?? '';
 
-	console.dir(name)
-	console.dir(genre)
-	console.dir(location)
-	console.dir(country)
-	console.dir(status)
-
 	let  { data, error } = await supabase.from('bands')
 		.select()
 		.ilike('name', `%${name}%`)
@@ -26,8 +20,6 @@ export async function GET({ url } : RequestEvent ) {
 		.ilike('location', `%${location}%`)
 		.ilike('country', `%${country}%`)
 		.ilike('status', `%${status}%`);
-
-	console.dir("Results: " + data?.length)
 
 	return json(data);
 };
