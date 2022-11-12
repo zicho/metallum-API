@@ -25,9 +25,12 @@
 	let selectedStatus: string = statuses[0];
 
 	onMount(() => {
-		bands = data.data;
+		handleResponse(data.data);
+		// putting statuses here to work around bug making it add duplicates. Fix maybe?
 		statuses = statuses.concat([...new Set(bands.map((x) => x.status).sort())]);
 	});
+
+	$: selectedStatus, startSearch(); // in place of on:change for Select which does not seem to work :/
 
 	$: {
 		filteredBands = bands
@@ -52,32 +55,75 @@
 	}
 
 	const load = async () => {
-		
-		await fetch("api/load_all_bands");
+		return;
+		//await fetch("api/load_all_bands");
 	};
+
+	const loadNewData = async () => {
+		var queryString = `api/load_new_data/
+				?name=${bandNameSearchTerm}
+				&genre=${genreSearchTerm}
+				&location=${locationSearchTerm}
+				&country=${countrySearchTerm}
+				`;
+
+		if (selectedStatus != statuses[0]) {
+			queryString = queryString += `&status=${selectedStatus}`;
+		}
+
+		await fetch(queryString).then(async (response) => {
+			handleResponse(await response.json());
+		});
+	};
+
+	var delayTimer: any;
+
+	function startSearch(): void {
+		console.log('starting search!');
+		clearTimeout(delayTimer);
+		delayTimer = setTimeout(function () {
+			loadNewData();
+		}, 1000);
+	}
+
+	function handleResponse(data: Band[]) {
+		bands = data;
+	}
+
+	function testytest(arg0: string):  void {
+		alert(arg0)
+	}
 </script>
 
+<!-- <Cell span={6}>
+	<Button on:click={() => load()} variant="raised">
+		<Label>Load new data</Label>
+	</Button>
+</Cell> -->
+
 <LayoutGrid>
-	<Cell span={6}><div class="mdc-typography--headline3">Metal Archives API Beta 1</div></Cell>
-	<!-- <Cell span={6}>
-		<Button on:click={() => load()} variant="raised">
-			<Label>Load new data</Label>
-		</Button>
-	</Cell> -->
+	<Cell span={12}><div class="mdc-typography--headline3">Metal Archives API Beta 1</div></Cell>
 
 	<Cell spanDevices={{ desktop: 3, tablet: 6, phone: 12 }}>
 		<Textfield
 			style="width:100%"
 			variant="outlined"
-			bind:value={bandNameSearchTerm}
 			label="Band name"
+			bind:value={bandNameSearchTerm}
+			on:input={startSearch}
 		>
 			<HelperText slot="helper">Filter by band name</HelperText>
 		</Textfield>
 	</Cell>
 
 	<Cell spanDevices={{ desktop: 3, tablet: 6, phone: 12 }}>
-		<Textfield style="width:100%" variant="outlined" bind:value={genreSearchTerm} label="Genre">
+		<Textfield
+			style="width:100%"
+			variant="outlined"
+			label="Genre"
+			bind:value={genreSearchTerm}
+			on:input={startSearch}
+		>
 			<HelperText slot="helper">Filter by genre</HelperText>
 		</Textfield>
 	</Cell>
@@ -86,19 +132,21 @@
 		<Textfield
 			style="width:100%"
 			variant="outlined"
-			bind:value={locationSearchTerm}
 			label="Location"
+			bind:value={locationSearchTerm}
+			on:input={startSearch}
 		>
 			<HelperText slot="helper">Filter by location</HelperText>
 		</Textfield>
 	</Cell>
 
-		<Cell spanDevices={{ desktop: 2, tablet: 6, phone: 12 }}>
+	<Cell spanDevices={{ desktop: 2, tablet: 6, phone: 12 }}>
 		<Textfield
 			style="width:100%"
 			variant="outlined"
-			bind:value={countrySearchTerm}
 			label="Country"
+			bind:value={countrySearchTerm}
+			on:input={startSearch}
 		>
 			<HelperText slot="helper">Filter by Country</HelperText>
 		</Textfield>
@@ -112,8 +160,8 @@
 		<Select
 			style="width:100%"
 			variant="outlined"
-			bind:value={selectedStatus}
 			label="Filter by status"
+			bind:value={selectedStatus}
 		>
 			{#each statuses as status}
 				<Option value={status}>{status}</Option>
